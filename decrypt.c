@@ -18,12 +18,12 @@ int main(int argc, char *argv[]) {
 	// create plaintext file
 	FILE *plaintext;
 	plaintext = fopen("plaintext.txt","w");
-   	char inBlock[8];
 	unsigned long int last = 0x616161111110101;
 	unsigned long int X;
 	unsigned long int Y;
 	int blockStopped = -1;
 	char* outBlock = (char *) & X;
+	char* inBlock = (char *) & Y;
 	while (blockStopped == -1) {
 		// get input block 
 		for (int i = 0; i < 8; ++i) {
@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
 				inBlock[blockStopped] = 0;
 			}
 		}
-		Y = * (unsigned long int *) & inBlock;
 		
 		// write output block
 		X = Y - last;

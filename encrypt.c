@@ -18,12 +18,12 @@ int main(int argc, char *argv[]) {
 	// create ciphertext file
 	FILE *ciphertext;
 	ciphertext = fopen("ciphertext.bin","w");
-   	char inBlock[8];
 	unsigned long int last = 0x616161111110101;
 	unsigned long int X;
 	unsigned long int Y;
 	int blockStopped = -1;
 	char* outBlock = (char *) & Y;
+	char* inBlock = (char*) & X;
 	while (blockStopped == -1) {
 		// get input block 
 		for (int i = 0; i < 8; ++i) {
@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
 				inBlock[blockStopped] = 0;
 			}
 		}
-		X = * (unsigned long int *) & inBlock;
 		
 		// write output block
 		Y = X + last;
