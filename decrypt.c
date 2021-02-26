@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	// open ciphertext file
+	// open plaintext file
 	FILE *ciphertext;
 	ciphertext = fopen(argv[1],"r");
 	if (ciphertext == NULL) {
@@ -15,14 +15,15 @@ int main(int argc, char *argv[]) {
                 exit(1);
 	}
 
-	// create ciphertext file
+	// create plaintext file
 	FILE *plaintext;
 	plaintext = fopen("plaintext.txt","w");
    	char inBlock[8];
-	unsigned long int runningSum = 0x616161111110101;
+	unsigned long int last = 0x616161111110101;
+	unsigned long int X;
 	unsigned long int Y;
 	int blockStopped = -1;
-	char* outBlock = (char *) & runningSum;
+	char* outBlock = (char *) & X;
 	while (blockStopped == -1) {
 		// get input block 
 		for (int i = 0; i < 8; ++i) {
@@ -40,7 +41,9 @@ int main(int argc, char *argv[]) {
 		Y = * (unsigned long int *) & inBlock;
 		
 		
-		runningSum -= Y;
+		// write output block
+		X = Y - last;
+		last = X;
 		for (int i = 0; i < 8; i++) {
 			fputc(outBlock[i], plaintext); 
 		}
