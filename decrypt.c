@@ -40,21 +40,17 @@ int main(int argc, char *argv[]) {
 		}
 		Y = * (unsigned long int *) & inBlock;
 		
-		
 		// write output block
 		X = Y - last;
 		last = X;
 		for (int i = 0; i < 8; i++) {
 			fputc(outBlock[i], plaintext); 
 		}
-		
-		//printf("res = %016lx\n", a); 
 	}
 
 	// close files
 	fclose(plaintext);
 	fclose(ciphertext);
-
 
 	return 0;
 }

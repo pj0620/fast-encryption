@@ -10,7 +10,6 @@ int main(int argc, char *argv[]) {
 	// open plaintext file
 	FILE *plaintext;
 	plaintext = fopen(argv[1],"r");
-	//printf("openning %s\n", argv[1]);
 	if (plaintext == NULL) {
 		fprintf(stderr, "could not open %s\n", argv[1]);
                 exit(1);
@@ -41,21 +40,17 @@ int main(int argc, char *argv[]) {
 		}
 		X = * (unsigned long int *) & inBlock;
 		
-		
 		// write output block
 		Y = X + last;
 		last = X;
 		for (int i = 0; i < 8; i++) {
 			fputc(outBlock[i], ciphertext); 
 		}
-		
-		//printf("res = %016lx\n", a); 
 	}
 
 	// close files
 	fclose(plaintext);
 	fclose(ciphertext);
-
 
 	return 0;
 }
