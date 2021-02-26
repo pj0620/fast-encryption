@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Assuming: 
-//	sizeof(unsigned long int) = 4
-//	sizeof(char) = 1
-int getNextBlock(char * inputBlock, unsigned long int * runningSum) {
-	for (int i = 0; i < 4; i++) {
-		
-	}
-} 
-
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		fprintf(stderr, "not enough input arguments - usage: %s [PLAINTEXT] [KEY]\n", argv[0]);
@@ -29,31 +20,37 @@ int main(int argc, char *argv[]) {
 	FILE *ciphertext;
 	ciphertext = fopen("ciphertext.bin","w");
    	char inBlock[8];
-	unsigned long int runningSum = 123456789;
+	unsigned long int last = 0x616161111110101;
+	unsigned long int X;
+	unsigned long int Y;
 	int blockStopped = -1;
+	char* outBlock = (char *) & Y;
 	while (blockStopped == -1) {
+		// get input block 
 		for (int i = 0; i < 8; ++i) {
-			//printf("looping\n");
 			inBlock[i] = fgetc(plaintext);
 			if (EOF == inBlock[i]) {
-				//printf("here\n");
 				blockStopped = i;
 				break;
 			}
-			else {
-				printf("char = %02x\n", inBlock[i]);
+		}
+		if (blockStopped != -1) {
+			for (; blockStopped < 8; ++blockStopped) {
+				inBlock[blockStopped] = 0;
 			}
 		}
-	}
-	// zero pad missing blocks
-	if (blockStopped != 0) {
-		for (; blockStopped < 8; ++blockStopped) {
-			inBlock[blockStopped] = 0;
+		X = * (unsigned long int *) & inBlock;
+		
+		
+		// write output block
+		Y = X + last;
+		last = X;
+		for (int i = 0; i < 8; i++) {
+			fputc(outBlock[i], ciphertext); 
 		}
+		
+		//printf("res = %016lx\n", a); 
 	}
-
-	unsigned long int a = * (unsigned long int *) & inBlock;
-	printf("res = %016lx", a);
 
 	// close files
 	fclose(plaintext);
